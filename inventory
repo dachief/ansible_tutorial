@@ -1,3 +1,5 @@
 node1 ansible_host=172.20.0.2 ansible_user=root
 node2 ansible_host=172.20.0.3 ansible_user=root
 node3 ansible_host=172.20.0.4 ansible_user=root
+node4 ansible_host=172.20.0.5 ansible_user=root
+
