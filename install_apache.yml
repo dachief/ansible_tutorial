@@ -1,0 +1,26 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: update repository index
+    dnf: 
+      update_cache: yes
+
+  - name: install apache2 package
+    dnf:
+      name: httpd
+      state: latest
+
+  - name: add php support for apache
+    dnf:
+      name: 
+        - php
+        - php-cli
+        - php-common
+        - php-mbstring
+        - php-mysqlnd
+        - php-xml
+        - php-gd
+      state: latest
