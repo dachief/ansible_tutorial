@@ -1,0 +1,72 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates (Rocky)
+    tags: always
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "Rocky"
+
+  
+  - name: install updates (Debian)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+
+
+- hosts: web_servers
+  become: true
+  tasks:   
+
+  - name: update repository index
+    dnf:
+    when: ansible_distribution == "Rocky"
+
+  - name: install apache2 and packages
+    tags: apache, rocky,httpd
+    dnf:
+      name: 
+        - httpd
+        - php
+        - php-cli
+        - php-common
+        - php-mbstring
+        - php-mysqlnd
+        - php-xml
+        - php-gd
+      state: latest
+    when: ansible_distribution == "Rocky"
+
+  - name: install apache2 and PHP 
+    tags: apache,apache2,debian
+    apt:
+      name:
+        - apache2
+        - php
+      state: latest
+    when: ansible_distribution == "Debian"
+
+- hosts: db_servers
+  become: true
+  tasks:
+
+  - name: install mariadb package (Rocky)
+    tags: rocky,db,mariadb
+    dnf:
+      name: mariadb
+      state: latest
+    when: ansible_distribution == "Rocky" 
+
+
+  - name: install mariadb package (Debian)
+    tags: db,mariadb-server,debian
+    apt:
+      name: mariadb-server
+      state: latest
+    when: ansible_distribution == "Debian" 

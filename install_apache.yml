@@ -9,14 +9,10 @@
       update_cache: yes
     when: ansible_distribution == "Rocky"
 
-  - name: install apache2 package
-    dnf:
-      name: httpd
-      state: latest
-
-  - name: add php support for apache
+  - name: install apache2 and packages
     dnf:
       name: 
+        - httpd
         - php
         - php-cli
         - php-common
@@ -25,3 +21,12 @@
         - php-xml
         - php-gd
       state: latest
+    when: ansible_distribution == "Rocky"
+
+  - name: install apache2 and PHP 
+    apt:
+      name:
+        - apache2
+        - php
+      state: latest
+    when: ansible_distribution == "Debian"

@@ -1,0 +1,21 @@
+# Dockerfile.debian
+FROM debian:bookworm-slim
+
+# Install Apache and utilities
+RUN apt-get update && \
+    apt-get install -y apache2 && \
+    apt-get install -y iproute2 && \
+    apt-get install -y openssh-server && \
+    apt-get install -y python3 && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    mkdir -p /tmp/.ansible/tmp && \
+    mkdir /var/run/sshd
+CMD ["/usr/sbin/sshd", "-D"]
+
+
+# Expose HTTP port
+EXPOSE 80
+
+# Start Apache in foreground
+CMD ["apache2ctl", "-D", "FOREGROUND"]
+
